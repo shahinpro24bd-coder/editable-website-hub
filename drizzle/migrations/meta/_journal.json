@@ -8,6 +8,13 @@
       "when": 1795771107596,
       "tag": "0000_site_cms_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795771539857,
+      "tag": "0001_site_content_public_keys_only",
+      "breakpoints": true
     }
   ]
 }
