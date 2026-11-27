@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+## Project Architecture
+- **Dynamic CMS & Visual Editor**: All editable site content (`doctor`, `services`, `publications`, `videos`, `gallery`, `testimonials`, `texts`) lives in `public.site_content`, loaded in `src/routes/__root.tsx` via `getSiteContent`, and merged in place through `applyContent()` (`src/lib/cms.ts`) so both public routes and the inline visual editor (`/admin/pages/$page`) share one source of truth.
+- **Admin Access Control**: Admin privileges live exclusively in `public.user_roles` checked server-side and in RLS via `public.has_role(auth.uid(), 'admin')`; `/admin` routes sit behind `src/routes/_authenticated/route.tsx`.
+- **Private Media Uploads**: Admin image uploads go to the private `site-images` bucket and are served publicly at `/api/public/img/$` via `supabaseAdmin`.
+- **Practice Management Records**: Website appointment requests (`appointment_requests`) are stored in a Lovable Cloud table with public insert and admin-only management. The admin panel exposes appointment requests and website content only — no patient directory, care plans, surgical-visit records, invoicing, fees, or financial reporting. Legacy clinic-record tables stay in the database but are not reachable from the UI.
+- **Achievements list**: Recent Achievements cards live in `site_content.achievements` (managed in the admin Achievements tab; inline-edited via `achievements.<idx>.<field>` keys in the page editor). A saved empty list means "show none", unlike other lists which fall back to defaults when empty.

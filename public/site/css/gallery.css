@@ -1,0 +1,163 @@
+/* ==========================================================
+   Photo gallery slideshow — scoped to .pgal
+   ========================================================== */
+.pgal{
+  --ink:#06112b; --ink-2:#0b1d44; --blue:#0463FA; --sky:#9cc4ff; --mint:#5ee6c8; --gold:#f2c86b; --coral:#ff8a65;
+  --line:rgba(255,255,255,.1); --glass:rgba(10,22,52,.42);
+  --ease:cubic-bezier(.22,1,.36,1);
+  --f-display:'Outfit',system-ui,sans-serif; --f-body:'Plus Jakarta Sans',system-ui,sans-serif;
+  --pgal-dir:1; scroll-margin-top:80px;
+  position:relative; isolation:isolate; overflow:clip; width:100%; max-width:100%; align-self:stretch;
+  padding:104px 0 96px; color:#fff; font-family:var(--f-body);
+  background:
+    radial-gradient(900px 460px at 88% 0%,rgba(4,99,250,.32),transparent 62%),
+    radial-gradient(700px 420px at 0% 100%,rgba(94,230,200,.14),transparent 60%),
+    linear-gradient(165deg,var(--ink),var(--ink-2));
+}
+.pgal::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:64px 64px;mask-image:radial-gradient(ellipse at 50% 0%,#000 25%,transparent 72%)}
+.pgal *,.pgal *::before,.pgal *::after{box-sizing:border-box}
+/* the shared theme puts translateZ(0) on every div/section, which breaks the fixed full-screen view */
+.pgal,.pgal div:not(.pgal__backdrop){transform:none;will-change:auto}
+.pgal__strip,.pgal__stage{min-width:0;max-width:100%}
+.pgal h2,.pgal h3,.pgal p{margin:0}
+.pgal__wrap{max-width:1220px;margin:0 auto;padding:0 24px}
+
+/* ---------- head ---------- */
+.pgal__head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px 40px;flex-wrap:wrap;margin-bottom:36px}
+.pgal__kicker{display:inline-flex;align-items:center;gap:.6rem;padding:.45rem 1rem;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--line);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sky)}
+.pgal__kicker i{color:var(--mint)}
+.pgal__title{font-family:var(--f-display);font-weight:800;font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin:1.1rem 0 .9rem!important;color:#fff;max-width:720px}
+.pgal__title em{font-style:normal;background:linear-gradient(90deg,var(--sky),var(--mint));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pgal__lead{font-size:1.04rem;line-height:1.7;color:rgba(255,255,255,.68);max-width:600px}
+.pgal__meta{display:flex;align-items:center;gap:22px}
+.pgal__stat{font-family:var(--f-display);line-height:1}
+.pgal__stat b{display:block;font-size:2.4rem;font-weight:800;letter-spacing:-.03em;color:#fff}
+.pgal__stat span{display:block;margin-top:.4rem;font-family:var(--f-body);font-size:.78rem;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:.04em}
+.pgal__sep{width:1px;height:44px;background:var(--line)}
+.pgal__more{display:inline-flex;align-items:center;gap:.7rem;padding:.9rem 1.4rem;border-radius:999px;background:#fff;color:var(--ink)!important;font-weight:700;font-size:.92rem;text-decoration:none!important;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.pgal__more i{transition:transform .35s var(--ease)}
+.pgal__more:hover{transform:translateY(-2px);box-shadow:0 18px 40px -18px rgba(156,196,255,.8)}
+.pgal__more:hover i{transform:translateX(4px)}
+
+/* ---------- filters ---------- */
+.pgal__filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.pgal__chip{display:inline-flex;align-items:center;gap:.55rem;padding:.6rem 1.05rem;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:rgba(255,255,255,.78);font:600 .86rem/1 var(--f-body);cursor:pointer;transition:all .3s var(--ease)}
+.pgal__chip span{font-size:.72rem;font-weight:700;padding:.2rem .45rem;border-radius:999px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
+.pgal__chip:hover{border-color:rgba(255,255,255,.28);color:#fff}
+.pgal__chip.is-active{background:#fff;color:var(--ink);border-color:#fff}
+.pgal__chip.is-active span{background:rgba(6,17,43,.08);color:var(--ink)}
+.pgal__dot{display:inline-block;width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:var(--sky)}
+.pgal--conference{background:var(--sky)} .pgal--training{background:var(--mint)} .pgal--portrait{background:var(--gold)} .pgal--travel{background:var(--coral)}
+
+/* ---------- stage ---------- */
+.pgal__stage{position:relative;aspect-ratio:16/9;max-height:76vh;width:100%;border-radius:28px;overflow:hidden;background:#030a1d;outline:none;touch-action:pan-y;user-select:none;-webkit-user-select:none;
+  box-shadow:0 0 0 1px var(--line),0 50px 90px -40px rgba(0,0,0,.75),0 30px 60px -40px rgba(4,99,250,.55)}
+.pgal__stage:focus-visible{box-shadow:0 0 0 2px var(--sky),0 50px 90px -40px rgba(0,0,0,.75)}
+.pgal__slides{position:absolute;inset:0}
+.pgal__slide{position:absolute;inset:0;margin:0;opacity:0;visibility:hidden;transition:opacity .9s var(--ease),visibility 0s linear .9s}
+.pgal__slide.is-active{opacity:1;visibility:visible;transition:opacity .9s var(--ease),visibility 0s;z-index:2}
+.pgal__slide.is-leaving{visibility:visible;z-index:1}
+.pgal__backdrop{position:absolute;inset:-60px;background-size:cover;background-position:center;filter:blur(38px) saturate(1.25) brightness(.55);transform:scale(1.1)}
+.pgal__frame{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:zoom-in}
+.pgal__frame::before{content:"";position:absolute;width:44px;height:44px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;animation:pgal-spin .9s linear infinite;transition:opacity .3s}
+.pgal__slide.is-loaded .pgal__frame::before{opacity:0;animation:none}
+.pgal__frame img{position:relative;display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;opacity:0;transition:opacity .6s var(--ease);
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,.55));-webkit-user-drag:none}
+.pgal__slide.is-loaded .pgal__frame img{opacity:1}
+.pgal__slide.is-active .pgal__frame{animation:pgal-in 1.1s var(--ease) both}
+.pgal__slide.is-active.is-loaded .pgal__frame img{animation:pgal-kb 9s ease-out both}
+.pgal__slide.is-leaving .pgal__frame{animation:pgal-out .9s var(--ease) both}
+@keyframes pgal-in{from{transform:translateX(calc(var(--pgal-dir) * 70px)) scale(1.04);filter:blur(10px)}to{transform:none;filter:none}}
+@keyframes pgal-out{to{transform:translateX(calc(var(--pgal-dir) * -70px)) scale(.97);filter:blur(8px)}}
+@keyframes pgal-kb{from{transform:scale(1)}to{transform:scale(1.045)}}
+@keyframes pgal-spin{to{transform:rotate(360deg)}}
+
+.pgal__shade{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(0deg,rgba(3,9,26,.88) 0%,rgba(3,9,26,.35) 26%,transparent 46%),linear-gradient(180deg,rgba(3,9,26,.5),transparent 20%)}
+
+/* progress */
+.pgal__bar{position:absolute;left:0;right:0;top:0;height:3px;z-index:5;background:rgba(255,255,255,.1)}
+.pgal__bar i{display:block;height:100%;width:100%;transform-origin:left;background:linear-gradient(90deg,var(--blue),var(--sky),var(--mint));animation:pgal-bar 5.6s linear both}
+.pgal.is-paused .pgal__bar i{animation-play-state:paused}
+@keyframes pgal-bar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* tools + nav */
+.pgal__tools{position:absolute;top:18px;right:18px;z-index:6;display:flex;gap:8px}
+.pgal__tool,.pgal__nav{display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);background:var(--glass);color:#fff;cursor:pointer;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:transform .35s var(--ease),background .3s,border-color .3s}
+.pgal__tool{width:42px;height:42px;border-radius:14px;font-size:.9rem}
+.pgal__tool:hover,.pgal__nav:hover{background:rgba(255,255,255,.95);color:var(--ink);border-color:#fff}
+.pgal__nav{position:absolute;top:50%;z-index:6;width:56px;height:56px;border-radius:50%;margin-top:-28px;font-size:1rem;opacity:0}
+.pgal__nav--prev{left:20px;transform:translateX(-10px)} .pgal__nav--next{right:20px;transform:translateX(10px)}
+.pgal__stage:hover .pgal__nav,.pgal__stage:focus-within .pgal__nav{opacity:1;transform:none}
+.pgal__nav:active{transform:scale(.92)!important}
+
+/* caption + counter */
+.pgal__caption{position:absolute;left:32px;bottom:30px;right:200px;z-index:6;pointer-events:none}
+.pgal__caption.is-in>*{animation:pgal-up .8s var(--ease) both}
+.pgal__caption.is-in>*:nth-child(2){animation-delay:.08s} .pgal__caption.is-in>*:nth-child(3){animation-delay:.16s}
+@keyframes pgal-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.pgal__tag{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .8rem;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(10px);font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.pgal__caption h3{font-family:var(--f-display);font-weight:800;font-size:clamp(1.3rem,2.6vw,2.1rem);line-height:1.12;letter-spacing:-.02em;color:#fff;margin:.75rem 0 .45rem;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+.pgal__caption p{display:flex;align-items:center;gap:.5rem;font-size:.92rem;color:rgba(255,255,255,.75);font-weight:500}
+.pgal__caption p i{color:var(--mint);font-size:.8rem}
+.pgal__count{position:absolute;right:32px;bottom:28px;z-index:6;font-family:var(--f-display);display:flex;align-items:baseline;gap:.45rem;pointer-events:none}
+.pgal__count b{font-size:3.2rem;font-weight:800;letter-spacing:-.04em;line-height:1;background:linear-gradient(180deg,#fff,rgba(255,255,255,.55));-webkit-background-clip:text;background-clip:text;color:transparent}
+.pgal__count span{font-size:1rem;font-weight:600;color:rgba(255,255,255,.5)}
+
+/* ---------- thumbnails ---------- */
+.pgal__strip{position:relative;margin-top:18px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
+.pgal__strip::-webkit-scrollbar{display:none}
+.pgal__thumbs{position:relative;display:flex;gap:10px;padding:8px 40px;width:max-content}
+.pgal__thumb{position:relative;flex:0 0 auto;width:104px;height:72px;padding:0;border:0;border-radius:14px;overflow:hidden;cursor:pointer;background:#0d1a3a;opacity:.45;filter:saturate(.6);transition:opacity .35s,filter .35s,transform .45s var(--ease)}
+.pgal__thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
+.pgal__thumb::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);transition:box-shadow .35s}
+.pgal__thumb:hover{opacity:.85;filter:none}
+.pgal__thumb:hover img{transform:scale(1.08)}
+.pgal__thumb.is-active{opacity:1;filter:none;transform:translateY(-4px)}
+.pgal__thumb.is-active::after{box-shadow:inset 0 0 0 2px #fff,0 0 0 4px rgba(4,99,250,.55)}
+.pgal__thumb:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+
+/* ---------- expanded (full screen) ---------- */
+html.pgal-lock,html.pgal-lock body{overflow:hidden}
+/* body carries translateZ(0) from the theme; drop it while the full-screen view is open so position:fixed covers the screen */
+html.pgal-lock body{transform:none!important;will-change:auto!important}
+html.pgal-lock .back-to-top{display:none!important}
+.pgal.is-expanded{z-index:3000;overflow:visible}
+.pgal.is-expanded .pgal__viewer{position:fixed;inset:0;z-index:3000;display:flex;flex-direction:column;padding:18px 18px 12px;background:rgba(2,7,20,.97);backdrop-filter:blur(8px);animation:pgal-fade .4s var(--ease)}
+.pgal.is-expanded .pgal__stage{flex:1 1 auto;min-height:0;aspect-ratio:auto;max-height:none;border-radius:22px}
+.pgal.is-expanded .pgal__frame{cursor:default}
+.pgal.is-expanded .pgal__nav{opacity:1;transform:none}
+@keyframes pgal-fade{from{opacity:0}to{opacity:1}}
+
+/* ---------- responsive ---------- */
+@media (max-width:991.98px){
+  .pgal{padding:80px 0 72px}
+  .pgal__caption{right:130px}
+  .pgal__count b{font-size:2.5rem}
+}
+@media (max-width:767.98px){
+  .pgal{padding:64px 0 56px}
+  .pgal__wrap{padding:0 16px}
+  .pgal__head{margin-bottom:26px}
+  .pgal__meta{width:100%}
+  .pgal__filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px 18px;padding:0 16px}
+  .pgal__filters::-webkit-scrollbar{display:none}
+  .pgal__chip{flex:0 0 auto}
+  .pgal__stage{aspect-ratio:4/5;max-height:none;border-radius:22px}
+  .pgal__nav{width:44px;height:44px;margin-top:-22px;opacity:1;transform:none}
+  .pgal__nav--prev{left:12px} .pgal__nav--next{right:12px}
+  .pgal__tools{top:14px;right:14px}
+  .pgal__tool{width:38px;height:38px;border-radius:12px}
+  .pgal__caption{left:18px;right:18px;bottom:20px}
+  .pgal__caption p{font-size:.84rem}
+  .pgal__count{right:auto;left:18px;top:16px;bottom:auto}
+  .pgal__count b{font-size:1.6rem}
+  .pgal__count span{font-size:.8rem}
+  .pgal__thumb{width:76px;height:56px;border-radius:12px}
+  .pgal__thumbs{padding:8px 24px}
+  .pgal.is-expanded .pgal__viewer{padding:10px 10px 8px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pgal *{animation:none!important;transition-duration:.01ms!important}
+}
