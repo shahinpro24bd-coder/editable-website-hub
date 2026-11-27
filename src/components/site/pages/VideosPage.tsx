@@ -32,8 +32,8 @@ export function VideosPage() {
           <h1 className="display-1"><T k="videos.page.title" d="Videos" line /></h1>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb justify-content-center mb-0">
-              <li className="breadcrumb-item"><Link className="text-primary" to="/">Home</Link></li>
-              <li aria-current="page" className="breadcrumb-item active">Videos</li>
+              <li className="breadcrumb-item"><Link className="text-primary" to="/"><T k="crumb.home" d="Home" line /></Link></li>
+              <li aria-current="page" className="breadcrumb-item active"><T k="crumb.videos" d="Videos" line /></li>
             </ol>
           </nav>
         </div>
@@ -68,11 +68,11 @@ export function VideosPage() {
 
             <div className="vm-onair" aria-label="Channels">
               <span><T k="vid.seen" d="As seen on" line /></span>
-              <b className="ch-dbc">DBC NEWS</b>
-              <b className="ch-ntv">NTV</b>
-              <b className="ch-rtv">Rtv</b>
-              <b className="ch-boishakhi">Boishakhi TV</b>
-              <b className="ch-nexus">Nexus TV</b>
+              <b className="ch-dbc"><T k="vid.ch.dbc" d="DBC NEWS" line /></b>
+              <b className="ch-ntv"><T k="vid.ch.ntv" d="NTV" line /></b>
+              <b className="ch-rtv"><T k="vid.ch.rtv" d="Rtv" line /></b>
+              <b className="ch-boishakhi"><T k="vid.ch.boishakhi" d="Boishakhi TV" line /></b>
+              <b className="ch-nexus"><T k="vid.ch.nexus" d="Nexus TV" line /></b>
             </div>
 
             {featured && (
@@ -124,7 +124,7 @@ export function VideosPage() {
                     aria-pressed={channel === ch.key}
                     onClick={() => setChannel(ch.key)}
                   >
-                    {ch.label}
+                    <T k={`vid.ch.${ch.key}`} d={ch.label} line />
                     <span>{count}</span>
                   </button>
                 );
@@ -165,7 +165,7 @@ export function VideosPage() {
               </article>
             ))}
           </div>
-          {libraryList.length === 0 && <p className="vm-empty">No videos for this channel yet.</p>}
+          {libraryList.length === 0 && <p className="vm-empty"><T k="vid.empty" d="No videos for this channel yet." line /></p>}
         </div>
       </section>
     </>

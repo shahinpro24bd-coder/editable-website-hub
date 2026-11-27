@@ -18,8 +18,8 @@ export function ContactPage() {
           <h1 className="display-1"><T k="contact.header.title" d="Contact" line /></h1>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb justify-content-center mb-0">
-              <li className="breadcrumb-item"><Link className="text-primary" to="/">Home</Link></li>
-              <li aria-current="page" className="breadcrumb-item active">Contact</li>
+              <li className="breadcrumb-item"><Link className="text-primary" to="/"><T k="crumb.home" d="Home" line /></Link></li>
+              <li aria-current="page" className="breadcrumb-item active"><T k="crumb.contact" d="Contact" line /></li>
             </ol>
           </nav>
         </div>
@@ -104,9 +104,9 @@ export function ContactPage() {
             </div>
             <div className="appo9">
               <div className="appo10" style={{ borderLeftColor: "#083d8c" }}>
-                <h3><i className="fas fa-phone-alt" /> Call Direct: {doctor.phone}</h3>
+                <h3><i className="fas fa-phone-alt" /> <T k="contact.direct" d="Call Direct:" line /> {doctor.phone}</h3>
                 <p>
-                  Call <strong>{doctor.phone}</strong> or Dr Assistant <strong>{doctor.assistantPhone}</strong> to confirm your chamber serial at{" "}
+                  <T k="contact.direct.1" d="Call" line /> <strong>{doctor.phone}</strong> <T k="contact.direct.2" d="or Dr Assistant" line /> <strong>{doctor.assistantPhone}</strong> <T k="contact.direct.3" d="to confirm your chamber serial at" line />{" "}
                   <strong>{doctor.hospital}</strong>, {doctor.address}.
                 </p>
                 <a className="btn btn-primary btn-sm mt-2" href={doctor.phoneHref}>

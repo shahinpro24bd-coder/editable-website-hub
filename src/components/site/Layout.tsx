@@ -64,7 +64,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                       to={item.to}
                       className={`nav-item nav-link ${active ? "active" : ""}`}
                     >
-                      {item.label}
+                      <T k={`nav.${item.to}`} d={item.label} line />
                     </Link>
                   );
                 })}
@@ -95,15 +95,15 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               <p className="vfooter__meta">
                 {doctor.degrees}
                 <br />
-                Fellow — Retina &amp; Vitreous (IEH)
+                <T k="foot.meta.1" d="Fellow — Retina & Vitreous (IEH)" line />
                 <br />
                 {doctor.shortTitle}
                 <br />
-                Associate Professor (Vitreo-Retina), Bangladesh Medical University (BMU)
+                <T k="foot.meta.2" d="Associate Professor (Vitreo-Retina), Bangladesh Medical University (BMU)" line />
                 <br />
-                Consultant Ophthalmologist, {doctor.hospital}, {doctor.address}
+                <T k="foot.meta.3" d="Consultant Ophthalmologist" line />, {doctor.hospital}, {doctor.address}
                 <br />
-                Joint Secretary General, Bangladesh Vitreo-Retina Society (BVRS)
+                <T k="foot.meta.4" d="Joint Secretary General, Bangladesh Vitreo-Retina Society (BVRS)" line />
                 <br />
                 <strong>BMDC Reg: {doctor.bmdc}</strong>
               </p>
@@ -167,14 +167,14 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                     <li key={n.to}>
                       <Link to={n.to}>
                         <i className="fas fa-chevron-right" />
-                        {n.label}
+                        <T k={`nav.${n.to}`} d={n.label} line />
                       </Link>
                     </li>
                   ))}
                   <li>
                     <Link to="/admin">
                       <i className="fas fa-lock" />
-                      Admin Panel
+                      <T k="foot.adminPanel" d="Admin Panel" line />
                     </Link>
                   </li>
                 </ul>
@@ -195,10 +195,10 @@ export function SiteLayout({ children }: { children: ReactNode }) {
           </div>
           <div className="vfooter__bottom">
             <div>
-              © <span>{doctor.name} — {doctor.shortTitle} | BMDC Reg: {doctor.bmdc}</span>, All Rights Reserved.
+              © <span>{doctor.name} — {doctor.shortTitle} | BMDC Reg: {doctor.bmdc}</span>, <T k="foot.rights" d="All Rights Reserved." line />
             </div>
             <div>
-              <Link to="/admin" className="me-3">Admin</Link>
+              <Link to="/admin" className="me-3"><T k="foot.admin" d="Admin" line /></Link>
               <span>{doctor.website}</span>
             </div>
           </div>

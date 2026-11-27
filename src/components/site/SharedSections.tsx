@@ -107,12 +107,12 @@ export function PhotoGallery({ mode }: { mode: "home" | "full" }) {
         {mode === "full" && (
           <div className="pgal__filters" role="tablist" aria-label="Filter photos">
             <button type="button" role="tab" className={`pgal__chip ${cat === "all" ? "is-active" : ""}`} aria-selected={cat === "all"} onClick={() => setCat("all")}>
-              All <span>{source.length}</span>
+              <T k="gal.cat.all" d="All" line /> <span>{source.length}</span>
             </button>
             {(Object.keys(GAL_CATS) as GalleryItem["category"][]).map((k) => (
               <button key={k} type="button" role="tab" className={`pgal__chip ${cat === k ? "is-active" : ""}`} aria-selected={cat === k} onClick={() => setCat(k)}>
                 <i className={`pgal__dot pgal--${k}`} />
-                {GAL_CATS[k]} <span>{source.filter((it) => it.category === k).length}</span>
+                <T k={`gal.cat.${k}`} d={GAL_CATS[k]} line /> <span>{source.filter((it) => it.category === k).length}</span>
               </button>
             ))}
           </div>
@@ -152,7 +152,7 @@ export function PhotoGallery({ mode }: { mode: "home" | "full" }) {
             <div className="pgal__caption is-in" aria-live="polite">
               <span className="pgal__tag">
                 <i className={`pgal__dot pgal--${current.category}`} />
-                {GAL_CATS[current.category]}
+                <T k={`gal.cat.${current.category}`} d={GAL_CATS[current.category]} line />
               </span>
               <h3>{current.title}</h3>
               <p><i className="fas fa-map-marker-alt" />{current.place}</p>
@@ -470,10 +470,10 @@ export function AppointmentForm() {
             <i className="fas fa-check-circle text-success mb-3" style={{ fontSize: "3rem" }} />
             <h4 className="mb-2"><T k="appt.done.title" d="Request Received" line /></h4>
             <p className="text-muted mb-4">
-              Thank you! Your appointment request has been sent to {doctor.name}&apos;s team. For urgent eye emergencies, please call <a href={doctor.phoneHref}>{doctor.phone}</a>.
+              <T k="appt.done.1" d="Thank you! Your appointment request has been sent to" line /> {doctor.name}<T k="appt.done.2" d="'s team. For urgent eye emergencies, please call" line /> <a href={doctor.phoneHref}>{doctor.phone}</a>.
             </p>
             <button type="button" className="btn btn-primary" onClick={() => setSent(false)}>
-              Book Another Appointment
+              <T k="appt.again" d="Book Another Appointment" line />
             </button>
           </div>
         ) : (
@@ -524,7 +524,7 @@ export function AppointmentForm() {
               <div className="col-12">
                 <button type="submit" className="btn btn-primary w-100 py-3 fw-bold" disabled={busy}>
                   <i className="fas fa-paper-plane me-2" />
-                  {busy ? "Submitting…" : "Submit Appointment Request"}
+                  {busy ? <T k="appt.busy" d="Submitting…" line /> : <T k="appt.submit" d="Submit Appointment Request" line />}
                 </button>
               </div>
             </div>

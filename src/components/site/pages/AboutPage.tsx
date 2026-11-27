@@ -26,8 +26,8 @@ export function AboutPage() {
           <h1 className="display-1"><T k="about.header.title" d={`About ${doctor.name}`} line /></h1>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb justify-content-center mb-0">
-              <li className="breadcrumb-item"><Link className="text-primary" to="/">Home</Link></li>
-              <li aria-current="page" className="breadcrumb-item active">About</li>
+              <li className="breadcrumb-item"><Link className="text-primary" to="/"><T k="crumb.home" d="Home" line /></Link></li>
+              <li aria-current="page" className="breadcrumb-item active"><T k="crumb.about" d="About" line /></li>
             </ol>
           </nav>
         </div>
@@ -52,7 +52,7 @@ export function AboutPage() {
                 <div className="px-3">
                   <h3 className="phone-number">{doctor.phone}</h3>
                   <span style={{ color: "#666", fontSize: "0.95rem", fontWeight: 500 }}>
-                    Call for appointment · Dr Assistant {doctor.assistantPhone}
+                    <T k="about.call" d="Call for appointment · Dr Assistant" line /> {doctor.assistantPhone}
                   </span>
                 </div>
               </div>

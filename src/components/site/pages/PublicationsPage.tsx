@@ -69,9 +69,9 @@ export function PublicationsPage() {
         <div className="container pub-hero__inner">
           <div className="pub-hero__copy">
             <nav aria-label="breadcrumb" className="pub-crumbs">
-              <Link to="/">Home</Link>
+              <Link to="/"><T k="crumb.home" d="Home" line /></Link>
               <i className="fas fa-chevron-right" />
-              <span>Publications</span>
+              <span><T k="crumb.publications" d="Publications" line /></span>
             </nav>
             <span className="pub-eyebrow">
               <span className="pub-eyebrow__dot" />
@@ -164,7 +164,7 @@ export function PublicationsPage() {
                 aria-pressed={topic === k}
                 onClick={() => setTopic(k)}
               >
-                {label}
+                <T k={`pub.topic.${k}`} d={label} line />
               </button>
             ))}
           </div>
@@ -172,7 +172,7 @@ export function PublicationsPage() {
             <label className="pub-toggle">
               <input type="checkbox" checked={firstOnly} onChange={(e) => setFirstOnly(e.target.checked)} />
               <span className="pub-toggle__track"><span /></span>
-              First author only
+              <T k="pub.firstOnly" d="First author only" line />
             </label>
             <span className="pub-count" aria-live="polite">{filtered.length} of {publications.length}</span>
           </div>
@@ -183,7 +183,7 @@ export function PublicationsPage() {
             <div className="pub-year" key={year}>
               <div className="pub-year__label">
                 <span>{year}</span>
-                <small><b className="pub-year__count">{items.length}</b> {items.length === 1 ? "paper" : "papers"}</small>
+                <small><b className="pub-year__count">{items.length}</b> {items.length === 1 ? <T k="pub.paper" d="paper" line /> : <T k="pub.papers" d="papers" line />}</small>
               </div>
               <div className="pub-year__list">
                 {items.map(({ item: p, num }) => (
@@ -193,10 +193,10 @@ export function PublicationsPage() {
                       <div className="pub-card__meta">
                         <span className="pub-kind">{p.kind}</span>
                         {p.topics.map((t) => (
-                          <span key={t} className={`pub-tag pub-tag--${t}`}>{TOPIC_LABEL[t] ?? t}</span>
+                          <span key={t} className={`pub-tag pub-tag--${t}`}><T k={`pub.topic.${t}`} d={TOPIC_LABEL[t] ?? t} line /></span>
                         ))}
                         {p.firstAuthor && (
-                          <span className="pub-first"><i className="fas fa-star" />First author</span>
+                          <span className="pub-first"><i className="fas fa-star" /><T k="pub.first" d="First author" line /></span>
                         )}
                       </div>
                       <h3 className="pub-card__title">{p.title}</h3>
@@ -208,10 +208,10 @@ export function PublicationsPage() {
                         </span>
                         {p.url ? (
                           <a className="pub-link" href={p.url} target="_blank" rel="noopener noreferrer">
-                            Read paper<i className="fas fa-arrow-right" />
+                            <T k="pub.read" d="Read paper" line /><i className="fas fa-arrow-right" />
                           </a>
                         ) : (
-                          <span className="pub-link pub-link--muted"><i className="fas fa-book-open" />In print</span>
+                          <span className="pub-link pub-link--muted"><i className="fas fa-book-open" /><T k="pub.inprint" d="In print" line /></span>
                         )}
                       </div>
                     </div>
@@ -225,14 +225,14 @@ export function PublicationsPage() {
         {filtered.length === 0 && (
           <div className="pub-empty">
             <i className="fas fa-search" />
-            <h3>No publications match</h3>
-            <p>Try another subject or clear your search.</p>
+            <h3><T k="pub.empty.t" d="No publications match" line /></h3>
+            <p><T k="pub.empty.d" d="Try another subject or clear your search." line /></p>
             <button
               type="button"
               className="pub-btn pub-btn--ghost"
               onClick={() => { setQuery(""); setTopic("all"); setFirstOnly(false); }}
             >
-              Clear filters
+              <T k="pub.clear" d="Clear filters" line />
             </button>
           </div>
         )}
