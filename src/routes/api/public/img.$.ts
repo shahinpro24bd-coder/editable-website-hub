@@ -9,7 +9,7 @@ const MIME_BY_EXT: Record<string, string> = {
   avif: "image/avif",
 };
 
-// Serves uploaded site images from private storage through the site's own address.
+// Serves uploaded site images from storage through the site's own address.
 export const Route = createFileRoute("/api/public/img/$")({
   server: {
     handlers: {
@@ -18,8 +18,10 @@ export const Route = createFileRoute("/api/public/img/$")({
         if (!/^[\w.-]+$/.test(path) || path.includes("..")) return new Response("Not found", { status: 404 });
         let data: Blob | null = null;
         try {
-          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-          const res = await supabaseAdmin.storage.from("site-images").download(path);
+          const { publicDbClient } = await import("@/lib/public-db.server");
+          const sb = publicDbClient();
+          if (!sb) return new Response("Not found", { status: 404 });
+          const res = await sb.storage.from("site-images").download(path);
           data = res.data;
         } catch {
           return new Response("Not found", { status: 404 });

@@ -1,26 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "@/integrations/supabase/types";
 import { ADMIN_EMAIL, type SiteContent } from "@/lib/cms";
 
 export const getSiteContent = createServerFn({ method: "GET" }).handler(async (): Promise<SiteContent> => {
   try {
-    const url = process.env["SUPABASE_URL"];
-    const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
-    if (!url || !key) return {};
-    const sb = createClient<Database>(url, key, {
-      auth: { persistSession: false, autoRefreshToken: false },
-      global: {
-        fetch: (input, init) => {
-          const h = new Headers(init?.headers);
-          if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) {
-            h.delete("Authorization");
-          }
-          h.set("apikey", key);
-          return fetch(input, { ...init, headers: h });
-        },
-      },
-    });
+    const { publicDbClient } = await import("@/lib/public-db.server");
+    const sb = publicDbClient();
+    if (!sb) return {};
     const { data } = await sb.from("site_content").select("key, value");
     const out: Record<string, unknown> = {};
     for (const r of data ?? []) out[r.key] = r.value;
